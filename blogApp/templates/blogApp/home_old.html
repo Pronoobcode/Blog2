@@ -1,0 +1,35 @@
+{% extends "blogApp/main.html" %}
+
+{% block content %}
+
+
+<style>
+    .home-container{
+        display: grid;
+        grid-template-columns: 1fr 3fr 1fr;
+    }
+</style>
+
+
+<div class="home-container">
+
+    <div>
+        {% include "blogApp/category.html" %}
+    </div>
+
+    <div>
+
+        <h5>{{ post_count }} posts available</h5>
+
+        <a href="{% url "create-post" %}">Create Room</a>
+
+        {% include "blogApp/feed.html" %}
+    </div>
+
+    <div class="">
+        {% include "blogApp/activity.html" %}
+    </div>
+
+</div>
+
+{% endblock content %}

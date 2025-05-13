@@ -1,0 +1,94 @@
+{% extends "blogApp/main.html" %}
+
+{% block content %}
+
+<style>
+    .post-container {
+        display: grid;
+        grid-template-columns: 3fr 1fr;
+    }
+    .vote-section {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 10px;
+    }
+    .vote-count {
+        font-size: 1.2em;
+        font-weight: bold;
+    }
+    .vote-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 30px;
+        height: 30px;
+        border: none;
+        background-color: transparent;
+        cursor: pointer;
+    }
+    .vote-btn.active {
+        color: #007bff;
+    }
+</style>
+
+<div class="post-container">
+    <div>
+        <h1>{{ post.title }}</h1>
+        <p>{{ post.description }}</p>
+        
+        <div class="vote-section">
+            <div class="vote-count">{{ post.vote_count }}</div>
+            {% if request.user.is_authenticated %}
+                <a href="{% url 'upvote-post' post.id %}" class="vote-btn upvote {% if request.user in post.upvotes.all %}active{% endif %}">
+                    <svg width="24" height="24" viewBox="0 0 24 24">
+                        <path d="M7 14l5-5 5 5z"></path>
+                    </svg>
+                </a>
+                <a href="{% url 'downvote-post' post.id %}" class="vote-btn downvote {% if request.user in post.downvotes.all %}active{% endif %}">
+                    <svg width="24" height="24" viewBox="0 0 24 24">
+                        <path d="M7 10l5 5 5-5z"></path>
+                    </svg>
+                </a>
+            {% endif %}
+        </div>
+
+        <div class="comment-wrapper">
+            <h3>Conversation</h3>
+            <hr>
+            {% for post_message in post_messages %}
+                <div>
+                    {% if request.user == post_message.user %}
+                        <a href="{% url 'delete-message' post_message.id %}">Delete</a>
+                        <a href="{% url 'edit-message' post_message.id %}">Edit</a>
+                    {% endif %}
+                    <small>@{{ post_message.user }} {{ post_message.created|timesince }} ago</small>
+                    <p>{{ post_message.body }}</p>
+                    <hr>
+                </div>
+            {% endfor %}
+        </div>
+
+        {% if request.user.is_authenticated %}
+        <div class="comment-form">
+            <form action="" method="POST">
+                {% csrf_token %}
+                <input type="text" name="body" placeholder="Comment..." value="{{ edit_message_body|default:'' }}">  
+                
+            </form>
+        </div>
+        {% endif %}
+    </div>
+
+    <div>
+        <h3>Participants</h3>
+        <hr>
+        {% for peep in participants %}
+            <div>
+                <p>@{{ peep.username }}</p>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock content %}
