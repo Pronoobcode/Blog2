@@ -5,10 +5,10 @@
                 <div class="avatar avatar--small">
                   <img src="{{  post.created_by.avatar.url }}" />
                 </div>
-                <span><a href="{% url "profile" post.created_by.id %}">@{{ post.created_by.username }}</a>/span>
+                <span><a href="{% url "profile" post.created_by.id %}">@{{ post.created_by.username }}</a></span>
               </a>
               <div class="roomListRoom__actions">
-                <span>{{ post.create_by|timesince }}ago</span>
+                <span>{{ post.created|timesince }} ago</span>
               </div>
             </div>
             <div class="roomListRoom__content">
@@ -39,5 +39,4 @@
           </div>
 
 
-<div>
 {% endfor %}

@@ -15,5 +15,8 @@ urlpatterns = [
     path('logout/', views.logout_view, name='logout'),
     path('register/', views.register_view, name='register'),
     path('upvote-post/<int:pk>/', views.upvote_post_view, name='upvote-post'),
+    path('update-user/', views.update_user_view, name='update-user'),
     path('downvote-post/<int:pk>/', views.downvote_post_view, name='downvote-post'),
+    path('categories/', views.category_page_view, name='categories'),
+    path('activity-page/', views.activity_page_view, name='activity-page'),
 ]

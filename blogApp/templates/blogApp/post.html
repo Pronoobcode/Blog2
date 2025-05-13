@@ -61,7 +61,28 @@
             <div class="room__header scroll">
               <div class="room__info">
                 <h3>{{ post.title }}</h3>
-                <span>{{ post.create_by|timesince }} ago</span>
+                <div class="room__info-meta">
+                  <span>{{ post.created|timesince }} ago</span>
+                  <div class="vote-section">
+                    {% if request.user.is_authenticated %}
+                      <a href="{% url 'upvote-post' post.id %}" class="vote-btn upvote {% if request.user in post.upvotes.all %}active{% endif %}">
+                        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+                          <title>arrow-up</title>
+                          <path d="M16 1l-15 15h9v16h12v-16h9z"></path>
+                        </svg>
+                      </a>
+                    {% endif %}
+                    <div class="vote-count">{{ post.vote_count }}</div>
+                    {% if request.user.is_authenticated %}
+                      <a href="{% url 'downvote-post' post.id %}" class="vote-btn downvote {% if request.user in post.downvotes.all %}active{% endif %}">
+                        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+                          <title>arrow-down</title>
+                          <path d="M16 31l15-15h-9v-16h-12v16h-9z"></path>
+                        </svg>
+                      </a>
+                    {% endif %}
+                  </div>
+                </div>
               </div>
               <div class="room__hosted">
                 <p>Hosted By</p>
@@ -143,11 +164,10 @@
           <div class="room__message">
             {% if request.user.is_authenticated %}
             <div class="comment-form">
-                <form action="" method="POST">
-                    {% csrf_token %}
-                    <input type="text" name="body" placeholder="Comment..." value="{{ edit_message_body|default:'' }}">  
-                    
-                </form>
+              <form action="" method="POST">
+                {% csrf_token %}
+                <input type="text" name="body" placeholder="Write your comment here..." value="{{ edit_message_body|default:'' }}">  
+              </form>
             </div>
             {% endif %}
           </div>
@@ -174,5 +194,7 @@
         <!--  End -->
       </div>
     </main>
-    <script src="script.js"></script>
 {% endblock content%}
+
+
+

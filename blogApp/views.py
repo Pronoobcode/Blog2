@@ -5,14 +5,14 @@ from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .models import Post, Category, Message, User
-from .forms import PostForm, CustomUserCreationForm
+from .forms import PostForm, CustomUserCreationForm, CustomUserUpdateForm
 # Create your views here.
 
 
 def register_view(request):
     form = CustomUserCreationForm()
     if request.method == 'POST':
-        form = CustomUserCreationForm(request.POST)
+        form = CustomUserCreationForm(request.POST, request.FILES)
         if form.is_valid():
             user = form.save(commit=False)
             user.username = user.username.lower()
@@ -34,8 +34,9 @@ def login_view(request):
 
         try:
             user = User.objects.get(username=username)
-        except:
+        except User.DoesNotExist:
             messages.error(request, 'Username does not exist')
+            return render(request, 'blogApp/login_register.html', {'page': page})
         
         user = authenticate(request, username=username, password=password)
         
@@ -45,7 +46,7 @@ def login_view(request):
         else:
             messages.error(request, 'Password is incorrect')
 
-    context = {'page':page}
+    context = {'page': page}
     return render(request, 'blogApp/login_register.html', context)
 
 
@@ -62,7 +63,7 @@ def home_view(request):
     posts = Post.objects.filter(Q(category__name__icontains=q) | Q(title__icontains=q) | Q(description__icontains=q))
 
     post_messages = Message.objects.filter(Q(post__category__name__icontains=q))
-    categories = Category.objects.all()
+    categories = Category.objects.all()[0:6]
     post_count = posts.count()
 
     context = {'posts':posts, 'categories':categories, 'post_count':post_count, 'post_messages':post_messages}
@@ -181,6 +182,32 @@ def delete_message_view(request, pk):
         message.delete()
         return redirect('home')
     return render(request, 'blogApp/delete.html', {'obj':message})
+
+
+@login_required(login_url='login')
+def update_user_view(request):
+    user = request.user
+    form = CustomUserUpdateForm(instance=user)
+
+    if request.method == 'POST':
+        form = CustomUserUpdateForm(request.POST, request.FILES, instance=user)
+        if form.is_valid():
+            form.save()
+            return redirect('profile', pk=user.id)
+
+    context = {'form':form}
+    return render(request, 'blogApp/update_user.html', context)
+
+
+def category_page_view(request):
+    q = request.GET.get('q', '')
+    categories = Category.objects.filter(name__icontains=q)
+    return render(request, 'blogApp/categories.html', {'categories':categories})
+
+
+def activity_page_view(request):
+    post_messages = Message.objects.all()
+    return render(request, 'blogApp/activity_page.html', {'post_messages':post_messages})
 
 
 @login_required(login_url='login')

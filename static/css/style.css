@@ -1164,38 +1164,89 @@ a {
   font-weight: 1.4rem;
 }
 
+/* Comment form styling */
+.comment-form {
+  width: 100%;
+}
+
+.comment-form form {
+  width: 100%;
+}
+
+.comment-form input {
+  width: 100%;
+  background-color: var(--color-dark-light);
+  color: var(--color-light);
+  border: none;
+  outline: none;
+  border-radius: 0.7rem;
+  padding: 1.2rem;
+  font-size: 1.4rem;
+  font-weight: 500;
+}
+
+.comment-form input::placeholder {
+  color: var(--color-light-gray);
+}
+
+/* Voting styles - smaller and more integrated */
 .vote-section {
   display: flex;
   align-items: center;
-  margin: 1rem 0;
+  gap: 5px;
+  margin-left: 10px;
 }
 
 .vote-count {
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   font-weight: bold;
-  margin-right: 0.5rem;
+  color: var(--color-light);
 }
 
 .vote-btn {
-  display: inline-flex;
+  display: flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
-  margin: 0 0.25rem;
-  transition: background-color 0.2s;
+  transition: all 0.2s ease;
+  background-color: transparent;
 }
 
 .vote-btn:hover {
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: var(--color-dark-medium);
 }
 
-.vote-btn.active.upvote {
-  color: #4CAF50;
+.vote-btn svg {
+  width: 14px;
+  height: 14px;
+  fill: var(--color-light-gray);
 }
 
-.vote-btn.active.downvote {
-  color: #F44336;
+/* .vote-btn.active.upvote svg {
+  fill: var(--color-success);
+} */
+
+.vote-btn.active.downvote svg {
+  fill: var(--color-error);
 }
+
+/* Add hover state colors */
+.vote-btn.upvote:hover svg {
+  fill: var(--color-success);
+}
+
+.vote-btn.downvote:hover svg {
+  fill: var(--color-error);
+}
+
+.room__info-meta {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  font-size: 1.3rem;
+  color: var(--color-light-gray);
+}
+
 

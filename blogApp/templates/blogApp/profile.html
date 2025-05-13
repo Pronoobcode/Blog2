@@ -18,7 +18,9 @@
           <div class="profile__info">
             <h3>{{ user.fullname }}</h3>
             <p>@{{ user.username }}</p>
-            <a href="{% url 'edit-user' %}" class="btn btn--main btn--pill">Edit Profile</a>
+            {% if request.user == user %}
+            <a href="{% url 'update-user' %}" class="btn btn--main btn--pill">Edit Profile</a>
+            {% endif %}
           </div>
           <div class="profile__about">
             <h3>About</h3>
@@ -30,7 +32,7 @@
 
         <div class="roomList__header">
           <div>
-            <h2>Post by {{ user.username }}</h2>
+            <h2>Posts by {{ user.username }}</h2>
           </div>
         </div>
         {% include "blogApp/feed.html" %}
