@@ -123,9 +123,13 @@ def update_post_view(request, pk):
     if request.user != post.created_by:
         return HttpResponse('You are not allowed')
     if request.method == 'POST':
+        category_name = request.POST.get('category')
+        category, created = Category.objects.get_or_create(name=category_name)
         form = PostForm(request.POST, instance=post)
         if form.is_valid():
-            form.save()
+            post = form.save(commit=False)
+            post.category = category
+            post.save()
             return redirect('home')
     context = {'form':form, 'categories':categories}
     return render(request, 'blogApp/post_form.html', context)
