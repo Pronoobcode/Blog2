@@ -5,7 +5,7 @@
                 <div class="avatar avatar--small">
                   <img src="{{  post.created_by.avatar.url }}" />
                 </div>
-                <span><a href="{% url "profile" post.created_by.id %}">@{{ post.created_by.username }}</a></span>
+                <span>@{{ post.created_by.username }}</span>
               </a>
               <div class="roomListRoom__actions">
                 <span>{{ post.created|timesince }} ago</span>

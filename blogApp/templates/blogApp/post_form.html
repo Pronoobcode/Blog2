@@ -23,7 +23,6 @@
 
             <div class="form__group">
               <label for="post_category">Enter a Category</label>
-              {{ form.name }}
               <input required type="text" value="{{ post.category.name | default:'' }}" name="category" list="category-list">
               <datalist id="category-list">
                 <select id="post_category">

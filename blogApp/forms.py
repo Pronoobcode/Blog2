@@ -17,5 +17,4 @@ class CustomUserUpdateForm(ModelForm):
 class PostForm(ModelForm):
     class Meta:
         model = Post
-        fields = '__all__'
-        exclude = ('created_by', 'participants')
+        fields = ['title', 'description']
